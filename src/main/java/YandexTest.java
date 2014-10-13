@@ -17,12 +17,11 @@ import org.testng.annotations.Test;
 public class YandexTest {
 
     private static final String PASSWORD = "Test1234";
-  //  private static final String DOMAIN_PART = "@inbox.ru";
     private static final String LOGIN = "pavkam2014";
     private static final String START_URL = "https://mail.yandex.com/";
 
     private static final String LETTER_SUBJECT = "Demo sending via WebDriver";
-    private static final String LETTER_BODY = "New email!";
+    private static final String LETTER_BODY = "New email! You are just obvious!";
     private WebDriver driver;
 
     @BeforeClass(description = "Start browser")
@@ -37,15 +36,16 @@ public class YandexTest {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
-    @Test(description = "Login to Yandex.ru")
+    @Test(description = "Login to Yandex.com")
     public void loginToYandex() {
         doLogin(LOGIN, PASSWORD);
-        Assert.assertTrue(isElementPresent(By.id("PH_logoutLink")));
+        Assert.assertTrue(isElementPresent(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[1]/div[2]/div/div/div[1]/div[1]/div/div[1]/span[2]/a/span")));
     }
 
     @Test(description = "Begin new letter creation", dependsOnMethods = { "loginToYandex" })
     public void beginCreationOfLetter() {
-        driver.findElement(By.xpath("//a[@data-name='compose']")).click();
+        driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[2]/div/div/div/div[2]/a[2]/span[1]")).click();
+        //<input type="submit" tabindex="4" class="b-mail-button__button" value="Log in">
         Assert.assertTrue(driver.getCurrentUrl().contains("compose"));
     }
 
@@ -81,20 +81,22 @@ public class YandexTest {
     }
 
     private void sendLetter(String to, String subject, String body) {
-        driver.findElement(By.xpath("//input[@data-original-name='To']")).sendKeys(to);
-        driver.findElement(By.name("Subject")).sendKeys(subject);
+        //driver.findElement(By.xpath("//input[@data-original-name='To']")).sendKeys(to);
+        driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[2]/div/div/form/table/tbody/tr[3]/td[2]/div[2]")).sendKeys(to);
+        driver.findElement(By.id("compose-subj")).sendKeys(subject);
 
         // doesn't work ???
         // driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@id='compose_330_composeEditor_ifr']")));
 
         driver.switchTo().frame(3); // WTF Magic!?
 
-        WebElement bodyInput = driver.findElement(By.id("tinymce"));
+        WebElement bodyInput = driver.findElement(By.id("compose-send"));
         bodyInput.clear();
         bodyInput.sendKeys(body);
 
         driver.switchTo().defaultContent();
         driver.findElement(By.xpath("//div[@data-name='send']/span")).click();
+
     }
 
 }
