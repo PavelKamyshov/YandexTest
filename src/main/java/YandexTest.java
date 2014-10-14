@@ -44,13 +44,17 @@ public class YandexTest {
 
     @Test(description = "Begin new letter creation", dependsOnMethods = { "loginToYandex" })
     public void beginCreationOfLetter() {
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        System.out.println("beginCreationOfLetter is clicked ");
         driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[2]/div/div/div/div[2]/a[2]/span[1]")).click();
         //<input type="submit" tabindex="4" class="b-mail-button__button" value="Log in">
-        Assert.assertTrue(driver.getCurrentUrl().contains("compose"));
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+      //  Assert.assertTrue(driver.getCurrentUrl().contains("compose"));
     }
 
     @Test(description = "Send new letter", dependsOnMethods = { "beginCreationOfLetter" })
     public void sendNewLetter() {
+        System.out.println("beginCreationOfLetter is tried method sendLetter");
         sendLetter(LOGIN + "@yandex.ru", LETTER_SUBJECT, LETTER_BODY);
         Assert.assertTrue(isElementPresent(By.xpath("//div[@class='message-sent__title']")));
     }
@@ -81,8 +85,10 @@ public class YandexTest {
     }
 
     private void sendLetter(String to, String subject, String body) {
-        //driver.findElement(By.xpath("//input[@data-original-name='To']")).sendKeys(to);
-        driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[2]/div/div/form/table/tbody/tr[3]/td[2]/div[2]")).sendKeys(to);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+           //driver.findElement(By.xpath("//input[@data-original-name='To']")).sendKeys(to);
+       driver.findElement(By.xpath(".//div[contains(@class, 'mail-input_to')]/input[contains(@class, 'focus')]")).sendKeys(to);
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
         driver.findElement(By.id("compose-subj")).sendKeys(subject);
 
         // doesn't work ???
