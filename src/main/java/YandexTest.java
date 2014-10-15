@@ -26,8 +26,8 @@ public class YandexTest {
 
     @BeforeClass(description = "Start browser")
     public void startBrowser() {
-        System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
-        driver = new ChromeDriver();
+        //System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
+        driver = new FirefoxDriver();
         driver.get(START_URL);
     }
 
@@ -85,9 +85,9 @@ public class YandexTest {
     }
 
     private void sendLetter(String to, String subject, String body) {
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
            //driver.findElement(By.xpath("//input[@data-original-name='To']")).sendKeys(to);
-       driver.findElement(By.xpath(".//div[contains(@class, 'mail-input_to')]/input[contains(@class, 'focus')]")).sendKeys(to);
+       driver.findElement(By.xpath("//div[contains(@class, 'mail-input_to')]/input[contains(@class, 'focus')]")).sendKeys(to);
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
         driver.findElement(By.id("compose-subj")).sendKeys(subject);
 
