@@ -33,8 +33,8 @@ public class YandexTest {
     }
 
     @BeforeClass(dependsOnMethods = "startBrowser", description = "Add implicitly")
-    public void addImplicitly() {
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    public void addImplicitly(int t) {
+        driver.manage().timeouts().implicitlyWait(t, TimeUnit.SECONDS);
     }
 
     @Test(description = "Login to Yandex.com")
@@ -45,19 +45,35 @@ public class YandexTest {
 
     @Test(description = "Begin new letter creation", dependsOnMethods = { "loginToYandex" })
     public void beginCreationOfLetter() {
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        System.out.println("beginCreationOfLetter is clicked ");
+       addImplicitly(10);
+       //driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+       // System.out.println("beginCreationOfLetter is clicked ");
         driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[2]/div/div/div/div[2]/a[2]/span[1]")).click();
         //<input type="submit" tabindex="4" class="b-mail-button__button" value="Log in">
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        Assert.assertTrue(driver.getCurrentUrl().contains("/#com"));
+        //ToDo
+        Assert.assertTrue(driver.getCurrentUrl().contains("/#"));
     }
 
-    @Test(description = "Send new letter", dependsOnMethods = { "beginCreationOfLetter" })
-    public void sendNewLetter() {
-        System.out.println("beginCreationOfLetter is tried method sendLetter");
+    @Test(description = "Create new letter", dependsOnMethods = { "beginCreationOfLetter" })
+    public void CreateNewLetter() {
+        //System.out.println("beginCreationOfLetter is tried method sendLetter");
         sendLetter(LOGIN + "@yandex.ru", LETTER_SUBJECT, LETTER_BODY);
         Assert.assertTrue(isElementPresent(By.xpath("//div[@class='message-sent__title']")));
+    }
+
+    @Test(description = "Validate Draft", dependsOnMethods = { "beginCreationOfLetter" })
+    private void checkDrafts () throws InterruptedException {
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[1]/div[2]/div/div/div[1]/div[1]/div/div[5]/span[2]/a")).click();
+        Assert.assertTrue(isElementPresent((By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[2]/div[3]/div/div/div[2]/div[2]/div[2]/span[2]/span/a/span[1]/span/span"))));
+        driver.findElement((By.xpath(("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[2]/div[3]/div/div/div[2]/div[2]/div[2]/span[2]/span/a/span[1]/span/span")))).click();
+        clickSendButton();
+    }
+
+    //@Test(description = "ClickSendButton", dependsOnMethods = { "beginCreationOfLetter" })
+    private void clickSendButton(){
+        driver.findElement(By.id("compose-submit")).click();
     }
 
     @AfterClass(description = "Stop Browser")
@@ -103,9 +119,9 @@ public class YandexTest {
         bodyInput.clear();
         bodyInput.sendKeys(body);
 
-      //  driver.switchTo().defaultContent();
-      //  driver.findElement(By.id("compose-submit")).click();
 
     }
+
+
 
 }
