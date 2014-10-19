@@ -33,20 +33,24 @@ public class YandexTest {
     }
 
     @BeforeClass(dependsOnMethods = "startBrowser", description = "Add implicitly")
-    public void addImplicitly(int t) {
-        driver.manage().timeouts().implicitlyWait(t, TimeUnit.SECONDS);
+    public void addImplicitly() {
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @Test(description = "Login to Yandex.com")
     public void loginToYandex() {
         doLogin(LOGIN, PASSWORD);
         Assert.assertTrue(isElementPresent(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[1]/div[2]/div/div/div[1]/div[1]/div/div[1]/span[2]/a/span")));
+        driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[1]/div[2]/div/div/div[1]/div[1]/div/div[5]/span[2]/a")).click(); //попадаем в Drafts
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        // driver.findElement(By.xpath("div.block-messages:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > label:nth-child(1) > input:nth-child(1)")).click(); //чекаем чекбокс Drafts
+        // driver.findElement(By.xpath("a.b-messages-head__infoline__link:nth-child(2)")).click(); //удаляем все драфтс
+
     }
 
     @Test(description = "Begin new letter creation", dependsOnMethods = { "loginToYandex" })
     public void beginCreationOfLetter() {
-       addImplicitly(10);
-       //driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+       driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
        // System.out.println("beginCreationOfLetter is clicked ");
         driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[2]/div/div/div/div[2]/a[2]/span[1]")).click();
         //<input type="submit" tabindex="4" class="b-mail-button__button" value="Log in">
@@ -64,11 +68,11 @@ public class YandexTest {
 
     @Test(description = "Validate Draft", dependsOnMethods = { "beginCreationOfLetter" })
     private void checkDrafts () throws InterruptedException {
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[1]/div[2]/div/div/div[1]/div[1]/div/div[5]/span[2]/a")).click();
         Assert.assertTrue(isElementPresent((By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[2]/div[3]/div/div/div[2]/div[2]/div[2]/span[2]/span/a/span[1]/span/span"))));
         driver.findElement((By.xpath(("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[2]/div[3]/div/div/div[2]/div[2]/div[2]/span[2]/span/a/span[1]/span/span")))).click();
-        clickSendButton();
+
     }
 
     //@Test(description = "ClickSendButton", dependsOnMethods = { "beginCreationOfLetter" })
@@ -110,6 +114,7 @@ public class YandexTest {
         toField.sendKeys(to);
          driver.findElement(By.id("compose-subj")).sendKeys(subject);
 
+
         // doesn't work ???
         // driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@id='compose_330_composeEditor_ifr']")));
       //!!! driver.switchTo().frame(driver.findElement(By.id("compose-send")));
@@ -118,6 +123,20 @@ public class YandexTest {
         WebElement bodyInput = driver.findElement(By.id("compose-send"));
         bodyInput.clear();
         bodyInput.sendKeys(body);
+        bodyInput.sendKeys(" Sincerely yours - me.");
+                try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        bodyInput.sendKeys(" P.S. Bla bla");
+        bodyInput.sendKeys("   ");
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
     }
