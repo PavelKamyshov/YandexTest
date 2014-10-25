@@ -105,9 +105,15 @@ public class YandexTest {
         Thread.sleep(4000);
     }
 
-    //@Test(description = "ClickSendButton", dependsOnMethods = { "beginCreationOfLetter" })
+    @Test(description = "ClickSendButton", dependsOnMethods = { "beginCreationOfLetter" })
     private void clickSendButton() {
         driver.findElement(By.id("compose-submit")).click();
+        new WebDriverWait(driver, 5).until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[3]/div/div/div[1]")));
+        Assert.assertTrue(isElementPresent(By.xpath("/html/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[3]/div/div/div[1]")));
+
+        driver.findElement(By.xpath("//a[contains(@data-action,'user-dropdown.toggle')]//span[1]")).click();
+        driver.findElement(By.xpath("/html/body/div[5]/div[5]/div[10]/a")).click();
     }
 
     @AfterClass(description = "Stop Browser")
@@ -179,30 +185,13 @@ public class YandexTest {
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
         WebElement toField = driver.findElement(By.xpath("//div[contains(@class, 'mail-input_to')]/input[contains(@class, 'focus')]"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].removeAttribute('disabled');", toField);
-//       Assert.assertTrue(toField.getText() == to);
-        // ToDO Assert.assertTrue(driver.findElement(By.id("compose-subj")).getText().equalsIgnoreCase(subject));
+   //       Assert.assertTrue(toField.getAttribute("b-yabble__text__content").equalsIgnoreCase(to));
+        String composeSubject = driver.findElement(By.id("compose-subj")).getAttribute("value");
+         Assert.assertTrue(composeSubject.equalsIgnoreCase(subject));
 
-
-       /* WebElement bodyInput = driver.findElement(By.id("compose-send"));
-        bodyInput.clear();
-        bodyInput.sendKeys(body);
-        bodyInput.sendKeys(" Sincerely yours - me.");
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        bodyInput.sendKeys(" P.S. Bla bla");
-
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-            */
 
     }
+
 
 
 }
