@@ -18,7 +18,6 @@ public class YandexTest {
     private static final String PASSWORD = "Test1234";
     private static final String LOGIN = "pavkam2014";
     private static final String START_URL = "https://mail.yandex.com/";
-
     private static final String LETTER_SUBJECT = "Demo sending via WebDriver";
     private static final String LETTER_BODY = "New email! You are just obvious!";
     private WebDriver driver;
@@ -38,12 +37,12 @@ public class YandexTest {
     @Test(description = "Login to Yandex.com")
     public void loginToYandex() {
         doLogin(LOGIN, PASSWORD);
-        Assert.assertTrue(isElementPresent(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[1]/div[2]/div/div/div[1]/div[1]/div/div[1]/span[2]/a/span")));
+        Assert.assertTrue(isElementPresent(By.xpath("//a[contains(@title, 'Inbox (Ctrl + i)')]"))); //находим Inbox кнопку
 
     }
 
     //@Test(description = "Drafts deletion", dependsOnMethods = {"loginToYandex"})
-    private void deleteDrafts() throws InterruptedException {
+   /* private void deleteDrafts() throws InterruptedException {
         driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[1]/div[2]/div/div/div[1]/div[1]/div/div[5]/span[2]/a")).click(); //кликаем в Drafts
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 
@@ -60,7 +59,7 @@ public class YandexTest {
             driver.findElement(By.xpath("//div[@class='block-app']//div[@class='b-toolbar__i'][1]//a[2][@title='Compose (w, c)']")).click(); //кликаем по Compose кнопке
         }
 
-    }
+    }*/
 
     @Test(description = "Begin new letter creation", dependsOnMethods = {"loginToYandex"})
     public void beginCreationOfLetter() {
