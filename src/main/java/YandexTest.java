@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class YandexTest {
@@ -22,14 +23,14 @@ public class YandexTest {
     private static final String LETTER_BODY = "New email! You are just obvious!";
     private WebDriver driver;
 
-    @BeforeClass(description = "Start browser")
+    @BeforeTest(description = "Start browser")
     public void startBrowser() {
         //System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
         driver = new FirefoxDriver();
         driver.get(START_URL);
     }
 
-    @BeforeClass(dependsOnMethods = "startBrowser", description = "Add implicitly")
+    @BeforeTest(dependsOnMethods = "startBrowser", description = "Add implicitly")
     public void addImplicitly() {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
@@ -83,7 +84,7 @@ public class YandexTest {
         WebDriverWait wait = new WebDriverWait(driver, 15);
        // WebElement element = wait.until(
        wait.until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[2]/div/div/form/div/div[2]/div[6]/div[2]/span/span/span/span[1]"))); //Ждем пока появится надпись Saved As Draft
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class = 'js-compose-message-actions-helper js-compose-type']//span[contains(@class,'b-pseudo-link')]"))); //Ждем пока появится надпись Saved As Draft
         try {
             checkDrafts();
         } catch (Exception e) {
@@ -97,10 +98,10 @@ public class YandexTest {
     //@Test(description = "Validate Draft", dependsOnMethods = { "beginCreationOfLetter" })
     private void checkDrafts() throws InterruptedException {
         Thread.sleep(3000);
-        driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[1]/div[2]/div/div/div[1]/div[1]/div/div[5]/span[2]/a")).click(); //Кликаем на Драфтс??
-        Assert.assertTrue(isElementPresent((By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[1]/div[3]/div[2]/div/div[2]/div[2]/div/span[2]/span/a/span[1]/span/span[1]")))); //Проверяем, что есть элементы
+        driver.findElement(By.xpath("//div[@class='b-folders__i']//a[@title= 'Drafts']")).click(); //Кликаем на Драфтс
+        //div[@data-action='mail.message.show-or-select']//span[contains(@title, 'Demo sending via WebDriver')]
+        Assert.assertTrue(isElementPresent((By.xpath("//div[@data-action='mail.message.show-or-select']//span[contains(@title, 'Demo sending via WebDriver')]")))); //Проверяем, что есть элементы
         driver.findElement((By.xpath(("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[1]/div[3]/div[2]/div/div[2]/div[2]/div/span[2]/span/a/span[1]/span/span[1]")))).click();   //Заходим в наш Драфт
-
         Thread.sleep(4000);
     }
 
@@ -110,7 +111,6 @@ public class YandexTest {
         new WebDriverWait(driver, 5).until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[3]/div/div/div[1]")));
         Assert.assertTrue(isElementPresent(By.xpath("/html/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[3]/div/div/div[1]")));
-
         driver.findElement(By.xpath("//a[contains(@data-action,'user-dropdown.toggle')]//span[1]")).click();
         driver.findElement(By.xpath("/html/body/div[5]/div[5]/div[10]/a")).click();
     }
