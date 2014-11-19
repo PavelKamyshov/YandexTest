@@ -1,4 +1,4 @@
-/**
+package com.epam.mailtest; /**
  * Created by Pavlo_Kamyshov on 10/13/2014.
  */
 
@@ -38,18 +38,18 @@ public class YandexTest {
     @Test(description = "Login to Yandex.com")
     public void loginToYandex() {
         doLogin(LOGIN, PASSWORD);
-        Assert.assertTrue(isElementPresent(By.xpath("//a[contains(@title, 'Inbox (Ctrl + i)')]"))); //находим Inbox кнопку
+        Assert.assertTrue(isElementPresent(By.xpath("//a[contains(@title, 'Inbox (Ctrl + i)')]")));
 
     }
 
     //@Test(description = "Drafts deletion", dependsOnMethods = {"loginToYandex"})
    /* private void deleteDrafts() throws InterruptedException {
-        driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[1]/div[2]/div/div/div[1]/div[1]/div/div[5]/span[2]/a")).click(); //кликаем в Drafts
+        driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[1]/div[2]/div/div/div[1]/div[1]/div/div[5]/span[2]/a")).click();
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 
         try {
-            driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div/div[3]/div[2]/div/div[1]/div[2]/div/label/input")).click(); //чекаем чекбокс Drafts
-            driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[2]/div/div/div/div[2]/a[8]")).click(); //удаляем все драфтс
+            driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div/div[3]/div[2]/div/div[1]/div[2]/div/label/input")).click();
+            driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[2]/div/div/div/div[2]/a[8]")).click();
         }
         catch(Exception e) {
            System.out.println("All drafts were clear");
@@ -57,7 +57,7 @@ public class YandexTest {
             }
         finally {
            // Thread.sleep(1000000000);
-            driver.findElement(By.xpath("//div[@class='block-app']//div[@class='b-toolbar__i'][1]//a[2][@title='Compose (w, c)']")).click(); //кликаем по Compose кнопке
+            driver.findElement(By.xpath("//div[@class='block-app']//div[@class='b-toolbar__i'][1]//a[2][@title='Compose (w, c)']")).click();
         }
 
     }*/
@@ -69,7 +69,7 @@ public class YandexTest {
         //driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[2]/div/div/div/div[2]/a[2]/span[1]")).click(); //Compose clicked
         //ToDO вот тут он иногда тупо не кликается почему-то!
         driver.findElement(By.xpath("//div[@class='block-app']//div[@class='b-toolbar__i'][1]//a[2][@title='Compose (w, c)']")).click(); //Compose clicked
-        //*[@id="js"]/body/div[2]/div/div[5]/div/div[2]/div/div[2]/div[1]/div/div/div[2]/a[2] А НЕ КЛИКАЕТСЯ ПОТОМУ ЧТО МЕНЯЕТСЯ XPATH!!! /span
+        //*[@id="js"]/body/div[2]/div/div[5]/div/div[2]/div/div[2]/div[1]/div/div/div[2]/a[2]
 
           driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         //ToDo ассерт криво работает на /#compose - не видит
@@ -84,24 +84,24 @@ public class YandexTest {
         WebDriverWait wait = new WebDriverWait(driver, 15);
        // WebElement element = wait.until(
        wait.until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class = 'js-compose-message-actions-helper js-compose-type']//span[contains(@class,'b-pseudo-link')]"))); //Ждем пока появится надпись Saved As Draft
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class = 'js-compose-message-actions-helper js-compose-type']//span[contains(@class,'b-pseudo-link')]")));
         try {
             checkDrafts();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        validateLetter(LOGIN + "@yandex.ru", LETTER_SUBJECT, LETTER_BODY);  //Проверяем валидность письма
+        validateLetter(LOGIN + "@yandex.ru", LETTER_SUBJECT, LETTER_BODY);
         //   ToDo
-        // Assert.assertTrue(isElementPresent(By.xpath("//div[@class='message-sent__title']"))); //Проверяем, что письмо отправилось.
+        // Assert.assertTrue(isElementPresent(By.xpath("//div[@class='message-sent__title']")));
     }
 
     //@Test(description = "Validate Draft", dependsOnMethods = { "beginCreationOfLetter" })
     private void checkDrafts() throws InterruptedException {
         Thread.sleep(3000);
-        driver.findElement(By.xpath("//div[@class='b-folders__i']//a[@title= 'Drafts']")).click(); //Кликаем на Драфтс
+        driver.findElement(By.xpath("//div[@class='b-folders__i']//a[@title= 'Drafts']")).click();
         //div[@data-action='mail.message.show-or-select']//span[contains(@title, 'Demo sending via WebDriver')]
-        Assert.assertTrue(isElementPresent((By.xpath("//div[@data-action='mail.message.show-or-select']//span[contains(@title, 'Demo sending via WebDriver')]")))); //Проверяем, что есть элементы
-        driver.findElement((By.xpath(("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[1]/div[3]/div[2]/div/div[2]/div[2]/div/span[2]/span/a/span[1]/span/span[1]")))).click();   //Заходим в наш Драфт
+        Assert.assertTrue(isElementPresent((By.xpath("//div[@data-action='mail.message.show-or-select']//span[contains(@title, 'Demo sending via WebDriver')]"))));
+        driver.findElement((By.xpath(("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[1]/div[3]/div[2]/div/div[2]/div[2]/div/span[2]/span/a/span[1]/span/span[1]")))).click();
         Thread.sleep(4000);
     }
 
@@ -143,14 +143,14 @@ public class YandexTest {
     private void fillLetter(String to, String subject, String body) {
        // driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
         new WebDriverWait(driver, 15).until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(@class, 'mail-input_to')]/input[contains(@class, 'focus')]"))); //Ждем пока появится To field
-        WebElement toField = driver.findElement(By.xpath("//div[contains(@class, 'mail-input_to')]/input[contains(@class, 'focus')]")); // локейтим поле To
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(@class, 'mail-input_to')]/input[contains(@class, 'focus')]")));
+        WebElement toField = driver.findElement(By.xpath("//div[contains(@class, 'mail-input_to')]/input[contains(@class, 'focus')]"));
 //  System.out.println("before - " + toField.getAttribute("disabled"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].removeAttribute('disabled');", toField);
 //  System.out.println("after - " + toField.getAttribute("disabled"));
         toField.sendKeys(to);
 //        new WebDriverWait(driver, 15).until(
-//                ExpectedConditions.presenceOfElementLocated(By.id("compose-subj"))); //Ждем пока появится Subject field
+//                ExpectedConditions.presenceOfElementLocated(By.id("compose-subj")));
         driver.findElement(By.id("compose-subj")).sendKeys(subject);
 
 
