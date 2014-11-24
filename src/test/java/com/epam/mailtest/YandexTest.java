@@ -101,14 +101,14 @@ public class YandexTest {
         driver.findElement(By.xpath("//div[@class='b-folders__i']//a[@title= 'Drafts']")).click();
         //div[@data-action='mail.message.show-or-select']//span[contains(@title, 'Demo sending via WebDriver')]
         Assert.assertTrue(isElementPresent((By.xpath("//div[@data-action='mail.message.show-or-select']//span[contains(@title, 'Demo sending via WebDriver')]"))));
-        driver.findElement((By.xpath(("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[1]/div[3]/div[2]/div/div[2]/div[2]/div/span[2]/span/a/span[1]/span/span[1]")))).click();
+        driver.findElement((By.xpath(("//div[@class='b-messages']/div[1]//span[@class='b-messages__firstline-wrapper']")))).click();
         Thread.sleep(4000);
-    }
+            }
 
-    @Test(description = "ClickSendButton", dependsOnMethods = { "beginCreationOfLetter" })
+   @Test(description = "ClickSendButton", dependsOnMethods = { "beginCreationOfLetter" })
     private void clickSendButton() {
         driver.findElement(By.id("compose-submit")).click();
-        new WebDriverWait(driver, 5).until(
+        new WebDriverWait(driver, 10).until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[3]/div/div/div[1]")));
         Assert.assertTrue(isElementPresent(By.xpath("/html/body/div[2]/div/div[5]/div/div[2]/div/div[3]/div/div/div/div[3]/div/div/div[1]")));
         driver.findElement(By.xpath("//a[contains(@data-action,'user-dropdown.toggle')]//span[1]")).click();
