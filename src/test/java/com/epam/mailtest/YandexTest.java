@@ -1,27 +1,34 @@
-package com.epam.mailtest; /**
+package com.epam.mailtest;
+/**
  * Created by Pavlo_Kamyshov on 10/13/2014.
  */
 
-import java.util.concurrent.TimeUnit;
-
-import org.openqa.selenium.*;
+import pages.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.TimeUnit;
+
+
 public class YandexTest {
 
-    private static final String PASSWORD = "Test1234";
-    private static final String LOGIN = "pavkam2014";
-    private static final String START_URL = "https://mail.yandex.com/";
-    private static final String LETTER_SUBJECT = "Demo sending via WebDriver";
-    private static final String LETTER_BODY = "New email! You are just obvious!";
+//      added to sources/pages.Parameters class
+//    public static final String PASSWORD = "Test1234";
+//    public static final String LOGIN = "pavkam2014";
+//    public static final String LETTER_SUBJECT = "Demo sending via WebDriver";
+//    public static final String LETTER_BODY = "New email! You are just obvious!";
+    public static final String START_URL = "https://mail.yandex.com/";
     private WebDriver driver;
+    LoginPage loginpage = new LoginPage();
 
     @BeforeTest(description = "Start browser")
     public void startBrowser() {
@@ -36,11 +43,17 @@ public class YandexTest {
     }
 
     @Test(description = "Login to Yandex.com")
-    public void loginToYandex() {
-        doLogin(LOGIN, PASSWORD);
-        Assert.assertTrue(isElementPresent(By.xpath("//a[contains(@title, 'Inbox (Ctrl + i)')]")));
+    public void testLoginToYandex() {
+        loginpage.loginToYandex();
 
     }
+
+ //added to pages.LoginPage
+//    public void loginToYandex() {
+//        doLogin(LOGIN, PASSWORD);
+//        Assert.assertTrue(isElementPresent(By.xpath("//a[contains(@title, 'Inbox (Ctrl + i)')]")));
+//
+//    }
 
     //@Test(description = "Drafts deletion", dependsOnMethods = {"loginToYandex"})
    /* private void deleteDrafts() throws InterruptedException {
@@ -59,7 +72,6 @@ public class YandexTest {
            // Thread.sleep(1000000000);
             driver.findElement(By.xpath("//div[@class='block-app']//div[@class='b-toolbar__i'][1]//a[2][@title='Compose (w, c)']")).click();
         }
-
     }*/
 
     @Test(description = "Begin new letter creation", dependsOnMethods = {"loginToYandex"})
@@ -124,21 +136,23 @@ public class YandexTest {
         return !driver.findElements(by).isEmpty();
     }
 
-    private void doLogin(String login, String password) {
 
-        WebElement loginInput = driver.findElement(By.id("b-mail-domik-username11"));
-        loginInput.clear();
-        loginInput.sendKeys(login);
-
-//        Select domainPartSelect = new Select(driver.findElement(By.xpath("//*[@id='mailbox__login__domain']")));
-//        domainPartSelect.selectByVisibleText(domainPart);
-
-        WebElement passwordInput = driver.findElement(By.id("b-mail-domik-password11"));
-        passwordInput.clear();
-        passwordInput.sendKeys(password);
-
-        driver.findElement(By.xpath("//input[@value='Log in']")).click();//(By.tagNamid("mailbox__auth__button")).click();
-    }
+    //added to pages.LoginPage
+//    private void doLogin(String login, String password) {
+//
+//        WebElement loginInput = driver.findElement(By.id("b-mail-domik-username11"));
+//        loginInput.clear();
+//        loginInput.sendKeys(login);
+//
+////        Select domainPartSelect = new Select(driver.findElement(By.xpath("//*[@id='mailbox__login__domain']")));
+////        domainPartSelect.selectByVisibleText(domainPart);
+//
+//        WebElement passwordInput = driver.findElement(By.id("b-mail-domik-password11"));
+//        passwordInput.clear();
+//        passwordInput.sendKeys(password);
+//
+//        driver.findElement(By.xpath("//input[@value='Log in']")).click();//(By.tagNamid("mailbox__auth__button")).click();
+//    }
 
     private void fillLetter(String to, String subject, String body) {
        // driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
