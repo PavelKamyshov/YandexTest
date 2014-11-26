@@ -2,6 +2,7 @@ package com.epam.mailtest;
 /**
  * Created by Pavlo_Kamyshov on 10/13/2014.
  */
+// Я так подозреваю, что мне нужно вебдрайве объект инициализировать в ТестКлассе и потом передавать методам для обработки, чтобы каждый пейджобжект не создавал свой инстанс вебддрайвера
 
 import pages.*;
 import org.openqa.selenium.By;
@@ -27,8 +28,11 @@ public class YandexTest {
 //    public static final String LETTER_SUBJECT = "Demo sending via WebDriver";
 //    public static final String LETTER_BODY = "New email! You are just obvious!";
     public static final String START_URL = "https://mail.yandex.com/";
-    private WebDriver driver;
-    LoginPage loginpage = new LoginPage();
+    private WebDriver driver;                                           //это норм, что он приват?
+    LoginPage loginObject = new LoginPage();
+    DraftsPage draftsObject = new DraftsPage();
+    InboxPage inboxObject = new InboxPage();
+    UserMenuPage userMenuObject = new UserMenuPage();
 
     @BeforeTest(description = "Start browser")
     public void startBrowser() {
@@ -43,9 +47,8 @@ public class YandexTest {
     }
 
     @Test(description = "Login to Yandex.com")
-    public void testLoginToYandex() {
-        loginpage.loginToYandex();
-
+    public void loginToYandexTest() {
+        loginObject.loginToYandex(driver);
     }
 
  //added to pages.LoginPage
