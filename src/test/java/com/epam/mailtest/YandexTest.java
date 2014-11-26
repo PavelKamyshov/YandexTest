@@ -78,18 +78,22 @@ public class YandexTest {
     }*/
 
     @Test(description = "Begin new letter creation", dependsOnMethods = {"loginToYandex"})
-    public void beginCreationOfLetter() {
+   public void beginCreationOfLetterTest(){
+        inboxObject.beginCreationOfLetter(driver);
+    }
+
+    /*public void beginCreationOfLetter() {
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         // System.out.println("beginCreationOfLetter is clicked ");
-        //driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[2]/div/div/div/div[2]/a[2]/span[1]")).click(); //Compose clicked
+        //driver.findElement(By.xpath("/*//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[2]/div/div/div/div[2]/a[2]/span[1]")).click(); //Compose clicked
         //ToDO вот тут он иногда тупо не кликается почему-то!
         driver.findElement(By.xpath("//div[@class='block-app']//div[@class='b-toolbar__i'][1]//a[2][@title='Compose (w, c)']")).click(); //Compose clicked
-        //*[@id="js"]/body/div[2]/div/div[5]/div/div[2]/div/div[2]/div[1]/div/div/div[2]/a[2]
+        /*//*[@id="js"]/body/div[2]/div/div[5]/div/div[2]/div/div[2]/div[1]/div/div/div[2]/a[2]
 
           driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         //ToDo ассерт криво работает на /#compose - не видит
         Assert.assertTrue(driver.getCurrentUrl().contains("/#"));
-    }
+    }*/
 
     @Test(description = "Create new letter", dependsOnMethods = {"beginCreationOfLetter"})
     public void CreateNewLetter() {

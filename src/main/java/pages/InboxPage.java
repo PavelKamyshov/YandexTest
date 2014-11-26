@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
 import java.util.concurrent.TimeUnit;
@@ -9,7 +10,7 @@ import java.util.concurrent.TimeUnit;
  * Created by Pavlo_Kamyshov on 11/24/2014.
  */
 public class InboxPage {
-    public void beginCreationOfLetter() {
+    public void beginCreationOfLetter (WebDriver driver) {
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         // System.out.println("beginCreationOfLetter is clicked ");
         //driver.findElement(By.xpath("//*[@id=\"js\"]/body/div[2]/div/div[5]/div/div[2]/div/div[2]/div/div/div/div[2]/a[2]/span[1]")).click(); //Compose clicked
