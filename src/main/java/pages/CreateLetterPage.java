@@ -1,6 +1,6 @@
 package pages;
 
-import com.epam.mailtest.*;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -16,10 +16,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class CreateLetterPage {
 
-    public void createLetter(WebDriver driver) {
+    public void createLetter(WebDriver driver, Parameters parametersObject) {
 
 
-        fillLetter(parametersObject.LOGIN + "@yandex.ru", Parameters.LETTER_SUBJECT, Parameters.LETTER_BODY, driver);
+        fillLetter(parametersObject.LOGIN + "@yandex.ru", parametersObject.LETTER_SUBJECT, parametersObject.LETTER_BODY, driver);
     }
 
     private void fillLetter(String to, String subject, String body, WebDriver driver) {

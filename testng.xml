@@ -1,24 +1,38 @@
 <!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd" >
 <suite name="SystemSuite" verbose="1">
- 	<parameter name="url" value="http://yahoo.com" />
-	<parameter name="username" value="fortrainingepam@yahoo.com" />
-	<parameter name="password" value="qweasdzxc" />
-	<parameter name="timeout" value="30" /> 
 
-	<test name="System" >
+	<test name="System" preserve-order="true">
+
  		<!-- <groups>
 			<run>
 				<include name="smoke" />
 			</run>
 		</groups>  -->
 		
-		 <classes>
-		    <class name="com.epam.mailtest.YandexTest" />
-
-		</classes> 
 
 	    <packages>
 			<package name="com.epam.mailtest" />
-		</packages> 
-	</test>
+		</packages>
+        <classes>
+        <class name="com.epam.mailtest.YandexTest" />
+         </classes>
+    </test>
 </suite>
+
+<!--
+
+<suite name="tests" allow-return-values="true"
+       verbose="10">
+<test name="Bing-Search-Sample-Test">
+    <parameter name="testInterfaceXML" value="SearchInterface.xml"></parameter>
+    <parameter name="testSuiteXML" value="SearchTest.xml"></parameter>
+    <groups>
+        <run>
+            <include name="sample-tests" />
+        </run>
+    </groups>
+    <classes>
+        <class name="package.TestFactory" />
+    </classes>
+</test>
+</suite>-->

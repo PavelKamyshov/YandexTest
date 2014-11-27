@@ -14,9 +14,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class LoginPage {
 
-    public void loginToYandex(WebDriver driver) {
-        doLogin(driver, Parameters.LOGIN, Parameters.PASSWORD);
-        Assert.assertTrue(UserMenuPage.isElementPresent(By.xpath("//a[contains(@title, 'Inbox (Ctrl + i)')]"),driver));
+    public void loginToYandex(WebDriver driver, Parameters parametersObject) {
+        doLogin(driver, parametersObject.LOGIN, parametersObject.PASSWORD);
+        Assert.assertTrue(UserMenuPage.isElementPresent(By.xpath("//a[contains(@title, 'Inbox (Ctrl + i)')]"), driver));
 
     }
     private void doLogin(WebDriver driver, String login, String password) {

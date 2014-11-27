@@ -33,13 +33,10 @@ public class YandexTest {
     CreateLetterPage createLetterObject = new CreateLetterPage();
     Parameters parametersObject = new Parameters();
 
-    @BeforeTest(description = "Parse parameters from external xml file")
-    public void parseParametersTest() {
-        parametersObject.initializeParameters();
-    }
 
     @BeforeTest(description = "Start browser")
     public void startBrowser() {
+        parametersObject.initializeParameters();
         //System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
         driver = new FirefoxDriver();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -49,9 +46,9 @@ public class YandexTest {
     }
 
 
-    //@Test(description = "Login to Yandex.com")
+
     public void loginToYandexTest() {
-        loginObject.loginToYandex(driver);
+        loginObject.loginToYandex(driver,parametersObject);
     }
 
     //added to pages.LoginPage
@@ -80,7 +77,7 @@ public class YandexTest {
         }
     }*/
 
-    @Test(description = "Begin new letter creation")
+   //@Test(description = "Begin new letter creation")
     public void beginCreationOfLetterTest() {
         //driver.findElement(By.xpath("//div[@class='block-app']//div[@class='b-toolbar__i'][1]//a[2][@title='Compose (w, c)']")).click();
         inboxObject.beginCreationOfLetter(driver);
@@ -101,7 +98,8 @@ public class YandexTest {
 
     @Test(description = "Create new letter")
     public void CreateLetterTest() {
-        createLetterObject.createLetter(driver);
+        beginCreationOfLetterTest();
+        createLetterObject.createLetter(driver, parametersObject);
 
         WebDriverWait wait = new WebDriverWait(driver, 15);
         wait.until(
