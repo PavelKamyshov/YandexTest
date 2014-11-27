@@ -2,20 +2,16 @@ package com.epam.mailtest;
 /**
  * Created by Pavlo_Kamyshov on 10/13/2014.
  */
-// Я так подозреваю, что мне нужно вебдрайве объект инициализировать в ТестКлассе и потом передавать методам для обработки, чтобы каждый пейджобжект не создавал свой инстанс вебддрайвера
 
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 import pages.*;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,32 +23,38 @@ public class YandexTest {
 //    public static final String LOGIN = "pavkam2014";
 //    public static final String LETTER_SUBJECT = "Demo sending via WebDriver";
 //    public static final String LETTER_BODY = "New email! You are just obvious!";
+
     public static final String START_URL = "https://mail.yandex.com/";
-    private WebDriver driver;                                           //это норм, что он приват?
+    private WebDriver driver;
     LoginPage loginObject = new LoginPage();
     DraftsPage draftsObject = new DraftsPage();
     InboxPage inboxObject = new InboxPage();
     UserMenuPage userMenuObject = new UserMenuPage();
     CreateLetterPage createLetterObject = new CreateLetterPage();
+    Parameters parametersObject = new Parameters();
+
+    @BeforeTest(description = "Parse parameters from external xml file")
+    public void parseParametersTest() {
+        parametersObject.initializeParameters();
+    }
 
     @BeforeTest(description = "Start browser")
     public void startBrowser() {
         //System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
         driver = new FirefoxDriver();
-        driver.get(START_URL);
-    }
-
-    @BeforeTest(dependsOnMethods = "startBrowser", description = "Add implicitly")
-    public void addImplicitly() {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.get(START_URL);
+        loginToYandexTest();
+
     }
 
-    @Test(description = "Login to Yandex.com")
+
+    //@Test(description = "Login to Yandex.com")
     public void loginToYandexTest() {
         loginObject.loginToYandex(driver);
     }
 
- //added to pages.LoginPage
+    //added to pages.LoginPage
 //    public void loginToYandex() {
 //        doLogin(LOGIN, PASSWORD);
 //        Assert.assertTrue(isElementPresent(By.xpath("//a[contains(@title, 'Inbox (Ctrl + i)')]")));
@@ -78,8 +80,9 @@ public class YandexTest {
         }
     }*/
 
-    @Test(description = "Begin new letter creation", dependsOnMethods = {"loginToYandex"})
-   public void beginCreationOfLetterTest(){
+    @Test(description = "Begin new letter creation")
+    public void beginCreationOfLetterTest() {
+        //driver.findElement(By.xpath("//div[@class='block-app']//div[@class='b-toolbar__i'][1]//a[2][@title='Compose (w, c)']")).click();
         inboxObject.beginCreationOfLetter(driver);
     }
 
@@ -96,7 +99,7 @@ public class YandexTest {
         Assert.assertTrue(driver.getCurrentUrl().contains("/#"));
     }*/
 
-    @Test(description = "Create new letter", dependsOnMethods = {"beginCreationOfLetter"})
+    @Test(description = "Create new letter")
     public void CreateLetterTest() {
         createLetterObject.createLetter(driver);
 
@@ -108,7 +111,8 @@ public class YandexTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        createLetterObject.validateLetter(Parameters.LOGIN + "@yandex.ru", Parameters.LETTER_SUBJECT, Parameters.LETTER_BODY, driver);
+
+        createLetterObject.validateLetter(parametersObject.LOGIN + "@yandex.ru", parametersObject.LETTER_SUBJECT, parametersObject.LETTER_BODY, driver);
         /* fillLetter(LOGIN + "@yandex.ru", LETTER_SUBJECT, LETTER_BODY);
 
         WebDriverWait wait = new WebDriverWait(driver, 15);
@@ -135,12 +139,12 @@ public class YandexTest {
         Assert.assertTrue(isElementPresent((By.xpath("//div[@data-action='mail.message.show-or-select']//span[contains(@title, 'Demo sending via WebDriver')]"))));
         driver.findElement((By.xpath(("//div[@class='b-messages']/div[1]//span[@class='b-messages__firstline-wrapper']")))).click();
         Thread.sleep(4000);*/
-            }
+    }
 
-   @Test(description = "ClickSendButton", dependsOnMethods = { "beginCreationOfLetter" })
+    @Test(description = "ClickSendButton")
     public void clickSendButtonTest() {
-       createLetterObject.clickSendButton(driver);
-   }
+        createLetterObject.clickSendButton(driver);
+    }
    /* private void clickSendButton() {
         driver.findElement(By.id("compose-submit")).click();
         new WebDriverWait(driver, 10).until(
@@ -150,7 +154,7 @@ public class YandexTest {
         driver.findElement(By.xpath("/html/body/div[5]/div[5]/div[10]/a")).click();
     }*/
 
-    @AfterClass(description = "Stop Browser")
+    @AfterTest(description = "Stop Browser")
     public void stopBrowser() {
         driver.quit();
     }

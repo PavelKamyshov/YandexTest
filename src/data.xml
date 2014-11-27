@@ -1,0 +1,8 @@
+<!--  Some stolen example -->
+<note>
+    <LOGIN>pavkam2014</LOGIN>
+    <PASSWORD>Test1234</PASSWORD>
+    <START_URL>https://mail.yandex.com/</START_URL>
+    <LETTER_SUBJECT>Demo sending via WebDriver</LETTER_SUBJECT>
+    <LETTER_BODY>New email! You are just obvious!</LETTER_BODY>
+</note>
